@@ -1,2 +1,2 @@
 # Voice-Assistant
-Repository for Virtual Assistant software.
+Documentation/Community: https://discord.gg/EzVNGsBtd5
