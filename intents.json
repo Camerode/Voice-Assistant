@@ -1,0 +1,131 @@
+{
+    "intents": [
+        {
+            "tag": "Greetings",
+            "patterns": [
+                "hello",
+                "hey",
+                "hello",
+                "hi there",
+                "whats up",
+                "hi",
+                "whats up",
+                "Good morning",
+                "Good afternoon",
+                "Good evening"
+            ],
+            "responses": [
+                "Hello, how can I help you today?",
+                "Good day, How may I assist you?"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Date-Created",
+            "patterns": [
+                "when were you created",
+                "date of your creation",
+                "who created you",
+                "who made you",
+                "Who created you",
+                "who is your creator"
+            ],
+            "responses": [
+                "My creator, Reuben N, started developing me on the 5/03/2023"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Appreciation",
+            "patterns": [
+                "thanks",
+                "thank",
+                "thank you",
+                "much appreciated",
+                "appreciated",
+                "cheers"
+            ],
+            "responses": [
+                "No problem.",
+                "Any time.",
+                "Always available!",
+                "You're welcome!",
+                "No problem!",
+                "Glad to help!",
+                "Anytime!"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "How are you",
+            "patterns": [
+                "how are you?",
+                "how is it going?",
+                "hows it going"
+            ],
+            "responses": [
+                "I am doing well thank you, how are you?",
+                "Good thank you, how are you doing?"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "How are you response- Good",
+            "patterns": [
+                "ok",
+                "good",
+                "great",
+                "amazing",
+                "spiffing",
+                "fantastic",
+                "joyful",
+                "stunning",
+                "feeling well",
+                "feeling snazzy",
+                "feeling fine",
+                "feeling fabulous",
+                "pretty cool",
+                "terrific",
+                "good thank you",
+                "great thank you",
+                "amazing thank you",
+                "spiffing thank you",
+                "terrific thank you",
+                "good thanks",
+                "great thanks",
+                "amazing thanks",
+                "spiffing thanks",
+                "terrific thanks"
+            ],
+            "responses": [
+                "Great to hear!",
+                "Nice to hear!"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "How are you response- Bad",
+            "patterns": [
+                "bad",
+                "not good",
+                "depressing",
+                "spiffing",
+                "aweful",
+                "shiity ",
+                "not great",
+                "terrible",
+                "horrendous",
+                "could be better",
+                "tired",
+                "dissapointed",
+                "distraught",
+                "pained"
+            ],
+            "responses": [
+                "I hope you get better soon!",
+                "Sorry to hear, if you need anything then I am here!"
+            ],
+            "context_set": ""
+        }
+    ]
+}
