@@ -158,11 +158,12 @@ def main_loop():
         elif "repeat" in text:
             speak(previous_response)
             record_action('Repeated: ' + previous_response)
-        # Computer statistics command
+        # Date/Time command
         elif "date" in text:
             get_datetime()
         elif "time" in text:
             get_datetime()
+        # Computer statistics command
         elif "computer statistics" in text:
             speak("Diagnosing computer statistics")
             system_stats()
