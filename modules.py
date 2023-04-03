@@ -16,7 +16,6 @@ import platform
 from deep_translator import GoogleTranslator
 from langdetect import detect
 import requests
-import shutil
 import geocoder
 import feedparser
 from sys import platform
@@ -26,8 +25,12 @@ import json
 from speedtest import Speedtest
 import ctypes
 import subprocess
+from ctypes import cast, POINTER
+from comtypes import CLSCTX_ALL
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+
 ###################################################################################################
-# Settings & Action log
+# Settings/Volume
 ###################################################################################################
 # Opens settings text file
 def settings():
@@ -49,64 +52,50 @@ def settings():
         print(f"File {file_path} not found")
         speak(f"File {file_path} not found")
 
-# Reset settings.txt file.
-def reset_settings():
-    print("Are you sure you wish to reset my settings?")
-    speak("Are you sure you wish to reset my settings?")
-    text = recognize_speech()
-    if "yes" in text:
-        try:
-            with open('settings_default.txt', 'r') as default_file:
-                default_content = default_file.read()
-            with open('settings.txt', 'w') as new_file:
-                new_file.write(default_content)
-            print('Settings file successfully reset.')
-            speak('Settings file successfully reset.')
-            record_action("Settings reset")
-        except FileNotFoundError:
-            print('Error: settings_default.txt file not found.')
-            speak('Error: settings_default.txt file not found.')
-
-# Downloads settings
-def settings_download():
-    file_name = "settings.txt"
-    programs_dir = str(Path(__file__).parent) # Get directory path of the script
-    file_path = os.path.join(programs_dir, file_name) # Add file name to directory path
-    desktop_dir = str(Path.home() / "Desktop") # Get desktop directory path
-    desktop_file_path = os.path.join(desktop_dir, file_name) # Add file name to desktop directory path
-    if os.path.exists(desktop_file_path):
-        print(f"File {desktop_file_path} already exists on desktop")
-        speak(f"File {desktop_file_path} already exists on desktop")
+# Volume command
+def volume():
+    print("What percent would you like the volume?")
+    speak("What percent would you like the volume?")
+    volume2 = recognize_speech()
+    try:
+        volume2 = int(volume2)
+        if volume2 < 0 or volume2 > 100:
+            raise ValueError
+    except ValueError:
+        print("Please enter a valid volume value between 0 and 100.")
+        return
+    
+    if platform == "win32": # Windows
+        devices = AudioUtilities.GetSpeakers()
+        interface = devices.Activate(
+        IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        volume = cast(interface, POINTER(IAudioEndpointVolume))
+        # Convert percent to a scalar value between 0 and 1
+        scalar = float(volume2) / 100.0
+        # Set the volume
+        volume.SetMasterVolumeLevelScalar(scalar, None)
+        record_action(f"Volume set to {volume2}%")
+        print(f"Volume has been set to {volume2}%")
+        speak(f"Volume has been set to {volume2}%")
+    elif platform == "darwin": # macOS
+    # Convert percent to dB
+            dB = int((volume2 / 100) * 20) - 20
+            devices = AudioUtilities.GetSpeakers()
+            interface = devices.Activate(
+                IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+            volume = cast(interface, POINTER(IAudioEndpointVolume))
+            volume.SetMasterVolumeLevel(dB, None)
+            record_action(f"Volume set to {volume2}%")
+            print(f"Volume has been set to {volume2}%")
+            speak(f"Volume has been set to {volume2}%")
+    elif platform.startswith("linux"): # Linux
+            subprocess.run(['amixer', 'set', 'Master', f'{volume2}%'])
+            record_action(f"Volume set to {volume2}%")
+            print(f"Volume has been set to {volume2}%")
+            speak(f"Volume has been set to {volume2}%")
     else:
-        try:
-            shutil.copy(file_path, desktop_file_path) # Copy file from programs directory to desktop
-            print("Settings have been download to desktop")
-            speak("Settings have been download to desktop")
-            record_action("Settings file downloaded")
-        except Exception as e:
-            print(f"Error copying file: {e}")
-            speak(f"Error copying file: {e}")
-
-# Download actions
-def actions_download():
-    file_name = "actions.log"
-    programs_dir = str(Path(__file__).parent) # Get directory path of the script
-    file_path = os.path.join(programs_dir, file_name) # Add file name to directory path
-    desktop_dir = str(Path.home() / "Desktop") # Get desktop directory path
-    desktop_file_path = os.path.join(desktop_dir, file_name) # Add file name to desktop directory path
-    if os.path.exists(desktop_file_path):
-        print(f"File {desktop_file_path} already exists on desktop")
-        speak(f"File {desktop_file_path} already exists on desktop")
-    else:
-        try:
-            shutil.copy(file_path, desktop_file_path) # Copy file from programs directory to desktop
-            print("Actions have been download to desktop")
-            speak("Actions have been download to desktop")
-            record_action("Actions file downloaded")
-        except Exception as e:
-            print(f"Error copying file: {e}")
-            speak(f"Error copying file: {e}")
-
+        print("Unsupported platform")
+        speak("Unsupported platform")
 ###################################################################################################
 # Modules
 ###################################################################################################
@@ -607,8 +596,6 @@ def open_spotify():
     except Exception as e:
         # Catch any errors and print a message
         print(f"Error opening Spotify: {e}")
-
-
 
 ###################################################################################################
 # Module Translators

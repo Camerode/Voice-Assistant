@@ -1,5 +1,5 @@
-# Version 0.9.2
-# Date/Time Command / Minor changes - Compared to v0.9
+# Version 0.9.3
+# Silent Mode fixed, volume function created
 
 # Import libraries
 import os
@@ -7,6 +7,7 @@ import speech_recognition as sr
 import pyttsx3
 import json
 from datetime import datetime
+import sys
 # Import modules.py
 from modules import *
 
@@ -87,7 +88,7 @@ def process_command(command):
             if key_value[0] == 'silentMode':
                 my_variable = key_value[1]
                 if my_variable.lower() == "off":
-                    speak("Sorry, I do not have a response")
+                    return
                 break
         else:
             # If the loop completes without finding the variable, raise an error
@@ -141,6 +142,8 @@ def main_loop():
     previous_response = ""
     while True:
         text = recognize_speech()
+        if "volume" in text:
+            volume()
         # Sleep command
         if "sleep" in text:
             speak("Going into stasis until wake word")
