@@ -26,9 +26,8 @@ import json
 from speedtest import Speedtest
 import ctypes
 import subprocess
-
 ###################################################################################################
-# Settings
+# Settings & Action log
 ###################################################################################################
 # Opens settings text file
 def settings():
@@ -49,6 +48,64 @@ def settings():
     else:
         print(f"File {file_path} not found")
         speak(f"File {file_path} not found")
+
+# Reset settings.txt file.
+def reset_settings():
+    print("Are you sure you wish to reset my settings?")
+    speak("Are you sure you wish to reset my settings?")
+    text = recognize_speech()
+    if "yes" in text:
+        try:
+            with open('settings_default.txt', 'r') as default_file:
+                default_content = default_file.read()
+            with open('settings.txt', 'w') as new_file:
+                new_file.write(default_content)
+            print('Settings file successfully reset.')
+            speak('Settings file successfully reset.')
+            record_action("Settings reset")
+        except FileNotFoundError:
+            print('Error: settings_default.txt file not found.')
+            speak('Error: settings_default.txt file not found.')
+
+# Downloads settings
+def settings_download():
+    file_name = "settings.txt"
+    programs_dir = str(Path(__file__).parent) # Get directory path of the script
+    file_path = os.path.join(programs_dir, file_name) # Add file name to directory path
+    desktop_dir = str(Path.home() / "Desktop") # Get desktop directory path
+    desktop_file_path = os.path.join(desktop_dir, file_name) # Add file name to desktop directory path
+    if os.path.exists(desktop_file_path):
+        print(f"File {desktop_file_path} already exists on desktop")
+        speak(f"File {desktop_file_path} already exists on desktop")
+    else:
+        try:
+            shutil.copy(file_path, desktop_file_path) # Copy file from programs directory to desktop
+            print("Settings have been download to desktop")
+            speak("Settings have been download to desktop")
+            record_action("Settings file downloaded")
+        except Exception as e:
+            print(f"Error copying file: {e}")
+            speak(f"Error copying file: {e}")
+
+# Download actions
+def actions_download():
+    file_name = "actions.log"
+    programs_dir = str(Path(__file__).parent) # Get directory path of the script
+    file_path = os.path.join(programs_dir, file_name) # Add file name to directory path
+    desktop_dir = str(Path.home() / "Desktop") # Get desktop directory path
+    desktop_file_path = os.path.join(desktop_dir, file_name) # Add file name to desktop directory path
+    if os.path.exists(desktop_file_path):
+        print(f"File {desktop_file_path} already exists on desktop")
+        speak(f"File {desktop_file_path} already exists on desktop")
+    else:
+        try:
+            shutil.copy(file_path, desktop_file_path) # Copy file from programs directory to desktop
+            print("Actions have been download to desktop")
+            speak("Actions have been download to desktop")
+            record_action("Actions file downloaded")
+        except Exception as e:
+            print(f"Error copying file: {e}")
+            speak(f"Error copying file: {e}")
 
 ###################################################################################################
 # Modules
@@ -211,7 +268,7 @@ def tell_joke():
         print("Would you like another joke?")
         speak("Would you like another joke?")
         break
-            
+      
 # Current weather
 def get_current_weather():
     g = geocoder.ip('me', timeout=10)
@@ -499,6 +556,27 @@ def lock_computer():
     else:
         print("Unsupported platform")
         speak("Unsupported platform")
+
+# Get Date and time
+def get_datetime():
+    current_time = datetime.now()
+    formatted_time = current_time.strftime("%H:%M")
+    formatted_date = current_time.strftime("%d/%m/%Y")
+
+    hour = datetime.now().hour
+    if hour >= 0 and hour < 12:
+        morning = "in the morning"
+        print(f"The time is now {formatted_time} {morning}, the date is the {formatted_date}.")
+        speak(f"The time is now {formatted_time} {morning}, the date is the {formatted_date}.")
+    elif hour >= 12 and hour < 16:
+        afternoon = "in the afternoon"
+        print(f"The time is now {formatted_time} {afternoon}, the date is the {formatted_date}.")
+        speak(f"The time is now {formatted_time} {afternoon}, the date is the {formatted_date}.")
+    else:
+        evening = "in the evening"
+        print(f"The time is now {formatted_time} {evening}, the date is the {formatted_date}.")
+        speak(f"The time is now {formatted_time} {evening}, the date is the {formatted_date}.")
+
 ###################################################################################################
 # Open applications & Application commands
 ###################################################################################################
@@ -529,6 +607,8 @@ def open_spotify():
     except Exception as e:
         # Catch any errors and print a message
         print(f"Error opening Spotify: {e}")
+
+
 
 ###################################################################################################
 # Module Translators

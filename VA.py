@@ -1,5 +1,5 @@
-# Version 0.9.1
-# Minor fixes - Compared to v0.9
+# Version 0.9.2
+# Date/Time Command / Minor changes - Compared to v0.9
 
 # Import libraries
 import os
@@ -22,8 +22,9 @@ def speak(text):
     engine.runAndWait()
 
 # Get voice mode settings configuration
-my_variable = 'True'  # default value
+useVoice = 'True'  # default value
 
+# Searches settings.txt for the recognize_speech type. Assigns variable as boolean
 try:
     with open('settings.txt', 'r') as f:
         contents = f.read()
@@ -31,16 +32,16 @@ try:
     for line in lines:
         key_value = line.split('=')
         if key_value[0] == 'useVoice':
-            my_variable = key_value[1]
-            my_variable = True if my_variable.lower() == 'true' else False
+            useVoice = key_value[1]
+            useVoice = True if useVoice.lower() == 'true' else False
             break
     else:
         raise ValueError("useVoice not found in settings.txt")
 except Exception as e:
     print(f"Error changing text/voice mode: {e}")
 
-# Define a function to recognize speech, | True = voice commands | False = text commands
-def recognize_speech(use_voice=my_variable):
+# Define a function to recognize speech | Uses the settings.txt to define where it should be text or voice
+def recognize_speech(use_voice=useVoice):
     r = sr.Recognizer()
     if use_voice:
         with sr.Microphone() as source:
@@ -55,7 +56,8 @@ def recognize_speech(use_voice=my_variable):
     else:
         text = input("Enter text: ")
         return text.lower()
-    
+
+# Runs a setup if the program has never ran before
 def run_setup():
     print("Setting up program, please customize the settings file...")
     speak("Setting up program, please customize the settings file...")
@@ -157,6 +159,10 @@ def main_loop():
             speak(previous_response)
             record_action('Repeated: ' + previous_response)
         # Computer statistics command
+        elif "date" in text:
+            get_datetime()
+        elif "time" in text:
+            get_datetime()
         elif "computer statistics" in text:
             speak("Diagnosing computer statistics")
             system_stats()
