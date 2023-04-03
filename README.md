@@ -17,6 +17,35 @@ Contribution is available in:
 - [Support](https://discord.com/channels/1092081377500995644/1092084770671960245)
 - [Requests](https://discord.com/channels/1092081377500995644/1092086444442538076)
 
+## Commands/Features
+- Gets the current date and time
+- Getting computer statistics (RAM/memory)
+- Perform google searches
+- Map search
+- Tell me about...
+- Screenshots
+- Take a picture
+- Run an internet speed test
+- Tell a joke
+- Get current weather
+- Weather forecast
+- Read BBC (world) news articles
+- Lock computer
+- Open Spotify
+- Translate from English to...
+   - German
+   - Hindi
+   - Spanish
+   - French
+   - Russian
+   - Japanese
+   - Italian
+   - Greek
+   - Swedish
+   - Hungarian
+
+It can also respond to specific messages, e.g.
+An input of "Hello" will respond with "Hello, how can I help you today?"
 
 ## Installation
 Feel free to skip some sections if you already have anaconda installed (if you use python environments). Pip is required.
