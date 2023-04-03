@@ -18,6 +18,7 @@ Contribution is available in:
 - [Requests](https://discord.com/channels/1092081377500995644/1092086444442538076)
 
 ## Commands/Features
+- Change volume
 - Gets the current date and time
 - Getting computer statistics (RAM/memory)
 - Perform google searches
