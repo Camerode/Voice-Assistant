@@ -41,7 +41,7 @@ Open "Command Prompt" or "Terminal", what we're going to do is create an environ
 This environment will be used to install the python dependencies to allow the Voice Assistant to run.
 
 ### Step 4 - Visual Studio Code
-Each IDE is different, but do the same thing. However, starting off, open Visual Studio Code and click clone repository from GitHub, search for `Camerode/Voice-Assistant`, now click: `View` -> `Command Palette` -> `Python: Select Interpreter` -> `Python 3.9.13 ('Voice Assistant')...`. This has selected the environment for us to install the package. If we were to change the environment were to change, the packages would not be installed.
+Each IDE is different, but do the same thing. However, starting off, open Visual Studio Code and click clone repository from GitHub, search for `Camerode/Voice-Assistant`, now click: `View` -> `Command Palette` -> `Python: Select Interpreter` -> `Python 3.9.13 ('Voice Assistant')...`. This has selected the environment for us to install the package. If we were to change the environment/interpreter, the packages would not be installed, this way it is all in one location.
 
 ### Step 5 - Installing Requirements
 This part is entertaining to watch (from personal experience)..., in Visual Studio Code, click `Terminal` on the top bar, and `New Terminal`, in that terminal run: `pip install -r requirements.txt`. If it didn't install, then the repository wasn't cloned properly.
