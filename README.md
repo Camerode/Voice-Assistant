@@ -33,6 +33,7 @@ Contribution is available in:
 - Read BBC (world) news articles
 - Lock computer
 - Open Spotify
+- Play youtube video
 - Translate from English to...
    - German
    - Hindi
