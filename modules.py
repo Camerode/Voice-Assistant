@@ -28,6 +28,7 @@ import subprocess
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+import pywhatkit
 
 ###################################################################################################
 # Settings/Volume
@@ -596,6 +597,17 @@ def open_spotify():
     except Exception as e:
         # Catch any errors and print a message
         print(f"Error opening Spotify: {e}")
+
+# Youtube
+def youtube_play():
+    print("What would you like to play?")
+    speak("What would you like to play?")
+    query = recognize_speech()
+    song = query.replace("play", "")
+    pywhatkit.playonyt(song)
+    print(f"Now playing {query}")
+    speak(f"Now playing {query}")
+    record_action(f"Playlist started: {query}")
 
 ###################################################################################################
 # Module Translators
