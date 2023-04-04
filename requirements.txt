@@ -12,3 +12,4 @@ opencv-python==4.7.0.72
 pyaudio==0.2.13
 pycaw==20230322
 pync==2.0.3
+pywhatkit==5.4

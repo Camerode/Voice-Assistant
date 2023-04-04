@@ -1,5 +1,5 @@
-# Version 0.9.3.1
-# Volume command fixed, reammended intents.
+# Version 0.9.4
+# Added a youtube play command & other minor changes
 
 # Import libraries
 import os
@@ -151,6 +151,7 @@ def main_loop():
             speak("Going to sleep until wake word")
             record_action('Slept')
             main_loop()
+        # Locks computer
         if "lock" in text:
             print("Locking computer...")
             speak("Locking computer...")
@@ -209,8 +210,12 @@ def main_loop():
         # News command
         elif "news" in text:
             read_unread_rss()
+        # Spotify command
         elif "spotify" in text:
             open_spotify()
+        # Youtube command
+        elif "youtube" in text:
+            youtube_play()
         # Translation modules
         elif "translate" in text:
             if "german" in text:
