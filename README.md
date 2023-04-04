@@ -67,15 +67,18 @@ To check if it is installed, open "Command Prompt" or "Terminal" and type: `pyth
 
 ### Step 3 - Setting up an environment
 Now, here's where it gets a little more in-depth, during this process, do not close the command prompt or terminal.
-Open "Command Prompt" or "Terminal", what we're going to do is create an environment to run the Voice Assistant, think of this as a private house specifically for one use. In the Prompt/Terminal, write: `conda create -n VirtualAssistant python=3.9.13`. Let it load for a bit, it will ask if you're sure that you wish to make this environment, type `y` and hit enter. This will set up the environment.
+Open "Command Prompt" or "Terminal", what we're going to do is create an environment to run the Voice Assistant, think of this as a private house specifically for one use. In the Prompt/Terminal, write: `conda create -n VoiceAssistant python=3.9.13`. Let it load for a bit, it will ask if you're sure that you wish to make this environment, type `y` and hit enter. This will set up the environment.
 
 This environment will be used to install the python dependencies to allow the Voice Assistant to run.
 
 ### Step 4 - Visual Studio Code
-Each IDE is different, but do the same thing. However, starting off, open Visual Studio Code and click clone repository from GitHub, search for `Camerode/Voice-Assistant`, now click: `View` -> `Command Palette` -> `Python: Select Interpreter` -> `Python 3.9.13 ('Voice Assistant')...`. This has selected the environment for us to install the package. If we were to change the environment/interpreter, the packages would not be installed, this way it is all in one location.
+Each IDE is different, but do the same thing. However, starting off, open Visual Studio Code and click clone repository from GitHub, search for `Camerode/Voice-Assistant`, now click: `View` -> `Command Palette` -> `Python: Select Interpreter` -> `Python 3.9.13 ('VoiceAssistant')...`. This has selected the environment for us to install the package. If we were to change the environment/interpreter, the packages would not be installed, this way it is all in one location.
 
 ### Step 5 - Installing Requirements
-This part is entertaining to watch (from personal experience)..., in Visual Studio Code, click `Terminal` on the top bar, and `New Terminal`, in that terminal run: `pip install -r requirements.txt`. If it didn't install, then the repository wasn't cloned properly.
+This part is entertaining to watch (from personal experience)..., in Visual Studio Code, click `Terminal` on the top bar, and `New Terminal`, in that terminal run: 
+`pip install -r requirements.txt` If this isn't available, then add the pathway in to it: 
+`pip install -r /path/to/file/requirements.txt`, you can get this by right clicking on it and say copy path.
+If it didn't install, then the repository wasn't cloned properly.
 
 ### Step 6 - Run the program
 The main executable file is `VA.py`, simple open that file and click the small `>` arrow in the top right, enjoy!
