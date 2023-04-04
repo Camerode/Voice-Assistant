@@ -1,5 +1,5 @@
-# Version 0.9.3
-# Silent Mode fixed, volume function created
+# Version 0.9.3.1
+# Volume command fixed, reammended intents.
 
 # Import libraries
 import os
@@ -7,7 +7,6 @@ import speech_recognition as sr
 import pyttsx3
 import json
 from datetime import datetime
-import sys
 # Import modules.py
 from modules import *
 
@@ -24,7 +23,6 @@ def speak(text):
 
 # Get voice mode settings configuration
 useVoice = 'True'  # default value
-
 # Searches settings.txt for the recognize_speech type. Assigns variable as boolean
 try:
     with open('settings.txt', 'r') as f:
@@ -68,11 +66,16 @@ def run_setup():
 
 # Define a function to process a command
 def process_command(command):
+    # Volume command
+    if "volume" in command:
+        return volume()
+
     for intent in intents["intents"]:
         if command in intent["patterns"]:
             response = intent["responses"][0]
+            print(response)
             speak(response)
-            return response
+            return
     # Silent mode
     try:
         with open('settings.txt', 'r') as f:
@@ -88,7 +91,7 @@ def process_command(command):
             if key_value[0] == 'silentMode':
                 my_variable = key_value[1]
                 if my_variable.lower() == "off":
-                    return
+                    speak("Sorry, I do not have a response...")
                 break
         else:
             # If the loop completes without finding the variable, raise an error
@@ -142,11 +145,10 @@ def main_loop():
     previous_response = ""
     while True:
         text = recognize_speech()
-        if "volume" in text:
-            volume()
         # Sleep command
         if "sleep" in text:
-            speak("Going into stasis until wake word")
+            print("Going to sleep until wake word")
+            speak("Going to sleep until wake word")
             record_action('Slept')
             main_loop()
         if "lock" in text:
