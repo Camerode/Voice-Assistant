@@ -84,14 +84,22 @@ def process_command(command):
     }
 
     # Run the corresponding function if the command exists in the mapping
+    # TODO: Think of a better way to do multistep requests in a single phrase
+    commands = command.split()
+    for word in commands:
+        command_func = command_mapping.get(word)
+        if word == 'translate':
+            return command_func(command)
+
     command_func = command_mapping.get(command)
     if command_func:
+        record_action(command)
         return command_func()
     else:
         return handle_unrecognized_command()
 
 # Define a function to process translations
-def process_translation():
+def process_translation(command):
     language_mapping = {
         "german": translate_to_german,
         "hindi": translate_to_hindi,
@@ -104,10 +112,15 @@ def process_translation():
         "swedish": translate_to_swedish,
         "hungarian": translate_to_hungarian
     }
-    for lang, func in language_mapping.items():
-        if lang in text:
-            func()
-            break
+
+    commands = command.split()
+    for word in commands:
+        command_func = language_mapping.get(word)
+        if command_func:
+            return command_func()
+
+    return handle_unrecognized_command()
+
 
 def handle_unrecognized_command():
     try:
