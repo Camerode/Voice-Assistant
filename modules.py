@@ -602,8 +602,10 @@ def open_spotify():
 def youtube_play():
     print("What would you like to play?")
     speak("What would you like to play?")
+    # Create query
     query = recognize_speech()
     song = query.replace("play", "")
+    # Opens query
     pywhatkit.playonyt(song)
     print(f"Now playing {query}")
     speak(f"Now playing {query}")
