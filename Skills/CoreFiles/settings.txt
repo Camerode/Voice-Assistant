@@ -1,0 +1,24 @@
+# This is the settings file for the virtual assistant. Customize this how you wish.
+# Make sure to only change the text after the =
+#
+# E.g.
+# Name=
+# Can be changed to...
+# Name=Jimmy
+#
+############# SILENT MODE ###########################################################
+# Silent Mode...
+# "Off" = It will say "Sorry, I do not have a reponse" |  "On" It won't say...
+# e.g. silentMode=On
+
+silentMode=
+############# VOICE MODE ############################################################
+# Voice mode...
+# "True" = Use voice for commands/input, "False" = Use text input for commands/input
+
+useVoice=
+############# SPOTIFY ###############################################################
+# Spotify.exe command path file...
+# e.g. spotifyPath=C:Users\NAME\AppData\Local\Microsoft\WindowsApps\Spotify.exe
+
+spotifyPath=

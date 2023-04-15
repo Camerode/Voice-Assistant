@@ -1,124 +1,52 @@
-# Version 0.9.4
-# Added a youtube play command & other minor changes
-
 # Import libraries
 import os
-import speech_recognition as sr
-import pyttsx3
 import json
 from datetime import datetime
-# Import modules.py
-from modules import *
+import threading
+# Import Skills
+from Skills.Acore import *
+from Skills.computerStatistics import *
+from Skills.controlSpotify import *
+from Skills.controlYoutube import *
+from Skills.dateTeller import *
+from Skills.jokeTeller import *
+from Skills.lockComputer import *
+from Skills.newsTeller import *
+from Skills.screenshot import *
+from Skills.searchGoogle import *
+from Skills.searchMap import *
+from Skills.takePicture import *
+from Skills.tellMeAbout import *
+from Skills.translate import *
+from Skills.weatherTeller import *
+from Skills.webSpeedTest import *
 
-# Load the intents file
-with open("intents.json") as file:
+with open("Skills/CoreFiles/intents.json") as file:
     intents = json.load(file)
 
-# Initialize the text-to-speech engine
-engine = pyttsx3.init()
-# Define a function to speak text
-def speak(text):
-    engine.say(text)
-    engine.runAndWait()
-
-# Get voice mode settings configuration
-useVoice = 'True'  # default value
-# Searches settings.txt for the recognize_speech type. Assigns variable as boolean
-try:
-    with open('settings.txt', 'r') as f:
-        contents = f.read()
-    lines = contents.split('\n')
-    for line in lines:
-        key_value = line.split('=')
-        if key_value[0] == 'useVoice':
-            useVoice = key_value[1]
-            useVoice = True if useVoice.lower() == 'true' else False
-            break
-    else:
-        raise ValueError("useVoice not found in settings.txt")
-except Exception as e:
-    print(f"Error changing text/voice mode: {e}")
-
-# Define a function to recognize speech | Uses the settings.txt to define where it should be text or voice
-def recognize_speech(use_voice=useVoice):
-    r = sr.Recognizer()
-    if use_voice:
-        with sr.Microphone() as source:
-            audio = r.listen(source)
-            try:
-                text = r.recognize_google(audio)
-                print(f"You said: {text}")
-                return text.lower()
-            except:
-                print("Sorry, I do not have a response...")
-                return ""
-    else:
-        text = input("Enter text: ")
-        return text.lower()
-
-# Runs a setup if the program has never ran before
-def run_setup():
-    print("Setting up program, please customize the settings file...")
-    speak("Setting up program, please customize the settings file...")
-    settings()
-    print("To open this file again, say... \"open settings\"")
-    speak("To open this file again, say. open settings")
-
-# Define a function to process a command
 def process_command(command):
     # Volume command
     if "volume" in command:
         return volume()
-
+    # Intents
     for intent in intents["intents"]:
         if command in intent["patterns"]:
             response = intent["responses"][0]
             print(response)
             speak(response)
             return
-    # Silent mode
-    try:
-        with open('settings.txt', 'r') as f:
-            # Read the contents of the file
-            contents = f.read()
-        # Split the contents into lines
-        lines = contents.split('\n')
-        # Search for the variable we're interested in
-        for line in lines:
-            # Split the line into key and value
-            key_value = line.split('=')
-            # If the key is the one we're looking for, return the value
-            if key_value[0] == 'silentMode':
-                my_variable = key_value[1]
-                if my_variable.lower() == "off":
-                    speak("Sorry, I do not have a response...")
-                break
-        else:
-            # If the loop completes without finding the variable, raise an error
-            raise ValueError("silentMode not found in settings.txt")
-    except Exception as e:
-        # Catch any errors and print a message
-        print(f"Error changing to silentMode: {e}") 
-
-# Record actions
-def record_action(action):
-    # Get the current date and time
-    current_time = datetime.now()
-    # Open the log file in append mode
-    with open('actions.log', 'a') as log_file:
-        # Write the action and timestamp to the log file
-        log_file.write(f'{current_time}: {action}\n')
+    silent_Mode()
 
 # Define the main loop
 def main_loop():
-    # Check if the program has been run before
-    if not os.path.isfile('setup_complete.txt'):
-        # If not, run the setup function
+    if not os.path.isfile('Skills/CoreFiles/voice.log'):
         run_setup()
-        # Create a file to indicate that setup has been completed
-        open('setup_complete.txt', 'w').close()
-
+        open('Skills/CoreFiles/voice.log', 'w').close()
+    # Start the alarm thread
+    alarm_thread = threading.Thread(target=check_alarms)
+    alarm_thread.start()
     # Wait for the wake word
+
     while True:
         text = recognize_speech()
         if "wake" in text:
@@ -141,8 +69,6 @@ def main_loop():
                 break
 
     # Listen for commands #
-    # "Repeat" command store
-    previous_response = ""
     while True:
         text = recognize_speech()
         # Sleep command
@@ -158,12 +84,14 @@ def main_loop():
             record_action('Locking computer')
             lock_computer()
         # Settings command
-        if "settings" in text:
+        elif "settings" in text:
             settings()
-        # Repeat command
+        elif "alarms" in text:
+            open_alarms()
         elif "repeat" in text:
-            speak(previous_response)
-            record_action('Repeated: ' + previous_response)
+            last_line = repeat("Skills/CoreFiles/voice.log")
+            print(last_line)
+            speak(last_line)
         # Date/Time command
         elif "date" in text:
             get_datetime()
@@ -239,12 +167,10 @@ def main_loop():
             if "hungarian" in text:
                 translate_to_hungarian()
         # Shut down command
-        elif "shut down" in text:
+        if "shut down" in text:
             speak("Shutting down")
             record_action('Shut down')
             quit()
-        else:
-            previous_response = process_command(text)
 
 # Start the program
 if __name__ == "__main__":
