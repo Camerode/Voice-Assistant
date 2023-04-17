@@ -20,6 +20,7 @@ from Skills.tellMeAbout import *
 from Skills.translate import *
 from Skills.weatherTeller import *
 from Skills.webSpeedTest import *
+from Skills.alarms import *
 
 with open("Skills/CoreFiles/intents.json") as file:
     intents = json.load(file)
@@ -42,11 +43,11 @@ def main_loop():
     if not os.path.isfile('Skills/CoreFiles/voice.log'):
         run_setup()
         open('Skills/CoreFiles/voice.log', 'w').close()
-    # Start the alarm thread
+    # Start threads
     alarm_thread = threading.Thread(target=check_alarms)
     alarm_thread.start()
-    # Wait for the wake word
 
+    # Wait for the wake word
     while True:
         text = recognize_speech()
         if "wake" in text:
@@ -86,8 +87,11 @@ def main_loop():
         # Settings command
         elif "settings" in text:
             settings()
-        elif "alarms" in text:
-            open_alarms()
+        elif "alarm" in text:
+            if "create" in text:
+                create_alarm()
+            else:
+                open_alarms()
         elif "repeat" in text:
             last_line = repeat("Skills/CoreFiles/voice.log")
             print(last_line)

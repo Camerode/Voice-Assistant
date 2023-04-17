@@ -7,8 +7,6 @@ import subprocess
 import platform
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
-from playsound import playsound
-from time import sleep
 
 # Action recorder
 def record_action(action):
@@ -114,44 +112,6 @@ def settings():
     else:
         print(f"File {file_path} not found")
         speak(f"File {file_path} not found")
-
-# Alarms
-def open_alarms():
-    speak("Opening alarms file...")
-    print("Opening alarms file...")
-    file_path = "Skills/CoreFiles/alarms.txt"
-    if os.path.exists(file_path):
-        if platform.system() == "Windows":
-            os.system(f"start {file_path}")  # Windows
-        elif platform.system() == "Darwin":
-            os.system(f"open {file_path}")  # macOS
-        elif platform.system() == "Linux":
-            os.system(f"xdg-open {file_path}")  # Linux
-        else:
-            print("Unsupported platform")
-            speak("Unsupported platform")
-            record_action("Alarms file opened")
-    else:
-        print(f"File {file_path} not found")
-        speak(f"File {file_path} not found")
-
-# Alarms
-def check_alarms():
-    while True:
-        with open("Skills/CoreFiles/alarms.txt", "r") as f:
-            alarms = [line.strip() for line in f]
-        now = datetime.now().strftime("%H:%M %p,%A")
-        for alarm in alarms:
-            time_day = alarm.split(',')
-            if time_day[0] == now.split(',')[0]:
-                if time_day[1] == 'all' or time_day[1].lower() == now.split(',')[1].lower():
-                    playsound('Skills/CoreFiles/alarm.mp3')
-                    alarms.remove(alarm)
-                    record_action(f"Alarm gone off: {alarm}")
-                    with open("alarms.txt", "w") as f:
-                        for alarm in alarms:
-                            f.write(alarm + "\n")
-        sleep(1)
 
 # Volume command
 def volume():
