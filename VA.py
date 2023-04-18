@@ -21,6 +21,7 @@ from Skills.translate import *
 from Skills.weatherTeller import *
 from Skills.webSpeedTest import *
 from Skills.alarms import *
+from Skills.wordSearching import *
 
 with open("Skills/CoreFiles/intents.json") as file:
     intents = json.load(file)
@@ -174,6 +175,8 @@ def main_loop():
                 translate_to_swedish()
             if "hungarian" in text:
                 translate_to_hungarian()
+        elif "define" in text or "what" in text and "does" in text:
+            get_definition()
         # Shut down command
         if "shut down" in text:
             speak("Shutting down")
