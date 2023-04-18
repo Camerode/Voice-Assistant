@@ -25,5 +25,7 @@ def open_spotify():
             # If the loop completes without finding the variable, raise an error
             raise ValueError("SpotifyPath not found in settings.txt")
     except Exception as e:
-        # Catch any errors and print a message
-        print(f"Error opening Spotify: {e}")
+        print("An error has occurred in the controlSpotify command, output has been sent to errors.log")
+        speak("An error has occurred in the controlSpotify command, output has been sent to errors.log")
+        with open("Skills/CoreFiles/errors.log", "a") as f:
+            f.write("open_spotify: " + str(e) + "\n")

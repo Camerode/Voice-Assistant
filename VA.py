@@ -43,7 +43,11 @@ def main_loop():
     if not os.path.isfile('Skills/CoreFiles/voice.log'):
         run_setup()
         open('Skills/CoreFiles/voice.log', 'w').close()
-    # Start threads
+    if not os.path.isfile('Skills/CoreFiles/actions.log'):
+        open('Skills/CoreFiles/actions.log', 'w').close()
+    if not os.path.isfile('Skills/CoreFiles/errors.log'):
+        open('Skills/CoreFiles/errors.log', 'w').close()
+    # Start alarm threads
     alarm_thread = threading.Thread(target=check_alarms)
     alarm_thread.start()
 
